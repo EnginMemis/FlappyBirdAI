@@ -83,8 +83,8 @@ def train(model_name):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser() 
-    parser.add_argument('-m','--model', type=str, default=None)
+    parser.add_argument('-m','--check_point', type=str, default=None)
 
     args = parser.parse_args()
     
-    train(args.model)
+    train(args.check_point)
