@@ -6,7 +6,9 @@ This project has been created to learn deep reinforcement learning. </br>
 
 ```bash
 python agent.py
-```bash
+```
+
+## If you have a checkpoint model
 
 ```bash
 python agent.py --checkpoint "model/model.pt"
