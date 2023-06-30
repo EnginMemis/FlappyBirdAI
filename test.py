@@ -4,47 +4,50 @@ import torch
 import numpy as np
 import argparse
 
-def get_state(game):
+class Test:
+    def __init__(self):
+        self.model = Linear_QNet(4, 256, 2)
+        self.model.load_state_dict(torch.load(args.model))
+        self.game = FlappyBirdAI()
+
+    def get_state(self, game):
     
-    state = [
-            game.pipe_list[-1][0].topleft[0] - game.bird_rect.centerx, game.pipe_list[-1][0].topright[0] - game.bird_rect.centerx,
-            game.bird_rect.centery - game.pipe_list[-1][1].midbottom[1],
-            game.pipe_list[-1][0].midtop[1] - game.bird_rect.centery
-        ]
+        state = [
+                game.pipe_list[-1][0].topleft[0] - game.bird_rect.centerx, game.pipe_list[-1][0].topright[0] - game.bird_rect.centerx,
+                game.bird_rect.centery - game.pipe_list[-1][1].midbottom[1],
+                game.pipe_list[-1][0].midtop[1] - game.bird_rect.centery
+            ]
+        return np.array(state, dtype=int)
 
-    return np.array(state, dtype=int)
 
-parser = argparse.ArgumentParser() 
-parser.add_argument('-m','--model', type=str, default='model/model.pt')
+if __name__ == "__main__":
 
-args = parser.parse_args()
+    parser = argparse.ArgumentParser() 
+    parser.add_argument('-m','--model', type=str, default='model/model.pt')
 
-model = Linear_QNet(4, 256, 2)
+    args = parser.parse_args()
 
-model.load_state_dict(torch.load(args.model))
+    test = Test()
+    start = False
 
-game = FlappyBirdAI()
+    while True:
+        if start == False:
+            test.game.screen.blit(test.game.background, (0, 0))  
+            test.game.screen.blit(test.game.message, test.game.game_over_rect)  
+            start = test.game.check_key()
+            test.game.update()
+            
+        else:
+            state_old = test.get_state(test.game)
 
-start = False
+            final_move = [0, 0]
+            state0 = torch.tensor(state_old, dtype=torch.float)
+            prediction = test.model(state0)
+            move = torch.argmax(prediction).item()
+            final_move[move] = 1
 
-while True:
-    if start == False:
-        game.screen.blit(game.background, (0, 0))  
-        game.screen.blit(game.message, game.game_over_rect)  
-        start = game.check_key()
-        game.update()
-        
-    else:
-        state_old = get_state(game)
+            reward, done, score = test.game.play_step(final_move)
 
-        final_move = [0, 0]
-        state0 = torch.tensor(state_old, dtype=torch.float)
-        prediction = model(state0)
-        move = torch.argmax(prediction).item()
-        final_move[move] = 1
-
-        reward, done, score = game.play_step(final_move)
-
-        if done:
-            game.reset()
-            start = False
+            if done:
+                test.game.reset()
+                start = False
