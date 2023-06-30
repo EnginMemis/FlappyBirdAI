@@ -10,12 +10,12 @@ class Test:
         self.model.load_state_dict(torch.load(args.model))
         self.game = FlappyBirdAI()
 
-    def get_state(self, game):
+    def get_state(self):
     
         state = [
-                game.pipe_list[-1][0].topleft[0] - game.bird_rect.centerx, game.pipe_list[-1][0].topright[0] - game.bird_rect.centerx,
-                game.bird_rect.centery - game.pipe_list[-1][1].midbottom[1],
-                game.pipe_list[-1][0].midtop[1] - game.bird_rect.centery
+                self.game.pipe_list[-1][0].topleft[0] - self.game.bird_rect.centerx, self.game.pipe_list[-1][0].topright[0] - self.game.bird_rect.centerx,
+                self.game.bird_rect.centery - self.game.pipe_list[-1][1].midbottom[1],
+                self.game.pipe_list[-1][0].midtop[1] - self.game.bird_rect.centery
             ]
         return np.array(state, dtype=int)
 
@@ -38,7 +38,7 @@ if __name__ == "__main__":
             test.game.update()
             
         else:
-            state_old = test.get_state(test.game)
+            state_old = test.get_state()
 
             final_move = [0, 0]
             state0 = torch.tensor(state_old, dtype=torch.float)
