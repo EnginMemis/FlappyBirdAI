@@ -12,3 +12,10 @@ python agent.py
 
 ```bash
 python agent.py --checkpoint "model/model.pt"
+```
+
+## Test the model
+
+```bash
+python test.py --model "model/model.pt"
+```
