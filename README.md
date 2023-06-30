@@ -1,4 +1,3 @@
 # FlappyBirdAI
 
-This project is made to learn deep reinforcement learning. </br>
-asd
+This project has been created to learn deep reinforcement learning. </br>
