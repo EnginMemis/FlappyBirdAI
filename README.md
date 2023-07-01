@@ -22,4 +22,4 @@ python test.py --model "model/model.pt"
 
 ## Video Link
 
-[Video](https://youtu.be/TewVFf7EOg0)https://youtu.be/TewVFf7EOg0)
+[Video](https://youtu.be/TewVFf7EOg0)https://youtu.be/TewVFf7EOg0
