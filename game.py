@@ -56,7 +56,6 @@ class FlappyBirdAI:
         bottom, top = self.create_pipe()
         self.pipe_list.append([bottom, top])
 
-
     def reset(self):
         self.bird_rect.center = (100, self.h // 2)
         self.bird_movement = 0
